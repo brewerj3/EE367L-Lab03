@@ -80,8 +80,8 @@ int main(int argc, char *argv[]) {
 
     freeaddrinfo(servinfo); // all done with this structure
 
-    if(argv[2] != NULL) {                                           //Trying to send message to server
-        send(sockfd,argv[2],sizeof(argv[2]),0);
+    if(argv[1] != NULL) {                                           //Trying to send message to server
+        send(sockfd,argv[1],sizeof argv[1],0);
     }
 
     if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {

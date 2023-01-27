@@ -43,7 +43,7 @@ void *get_in_addr(struct sockaddr *sa) {
 }
 
 int main(void) {
-    int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
+    int sockfd, new_fd, numbytes;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr; // connector's address information
     socklen_t sin_size;
@@ -119,8 +119,13 @@ int main(void) {
 
         inet_ntop(their_addr.ss_family,get_in_addr((struct sockaddr *) &their_addr),s, sizeof s);
         printf("server: got connection from %s\n", s);
-        //printf("Server: received %s\n",buff);
-        recv(sockfd,buff,MAXDATASIZE-1,0);
+
+        if ((numbytes = recv(sockfd, buff, MAXDATASIZE - 1, 0)) == -1) {
+            perror("recv");
+            exit(1);
+        }
+        buff[numbytes] = '\0';
+        printf("Server: received %s\n",buff);
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
