@@ -34,6 +34,8 @@ int main(int argc, char *argv[]) {
     int rv;
     char s[INET6_ADDRSTRLEN];
 
+    //printf("argv[2] is %s \n",argv[2]); argv is ./program 1 2 3
+
     if (argc != 2) {
         fprintf(stderr, "usage: client hostname\n");
         exit(1);
