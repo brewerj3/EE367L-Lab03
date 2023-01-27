@@ -17,6 +17,8 @@
 
 #define PORT "3502"  // the port users will be connecting to
 
+#define MAXDATASIZE 100 //Maximum data size
+
 #define BACKLOG 10     // how many pending connections queue will hold
 
 void sigchld_handler(int s) {
@@ -48,6 +50,7 @@ int main(void) {
     struct sigaction sa;
     int yes = 1;
     char s[INET6_ADDRSTRLEN];
+    char buff[MAXDATASIZE];
     int rv;
 
     memset(&hints, 0, sizeof hints);
@@ -113,12 +116,15 @@ int main(void) {
             continue;
         }
 
+
         inet_ntop(their_addr.ss_family,get_in_addr((struct sockaddr *) &their_addr),s, sizeof s);
         printf("server: got connection from %s\n", s);
+        //printf("Server: received %s\n",buff);
+        recv(sockfd,buff,MAXDATASIZE-1,0);
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
-            if (send(new_fd, "Hello, world!", 13, 0) == -1)
+            if (send(new_fd, buff, sizeof buff, 0) == -1)
                 perror("send");
             close(new_fd);
             exit(0);
