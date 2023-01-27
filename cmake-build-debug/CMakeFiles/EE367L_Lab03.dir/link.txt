@@ -1,0 +1,1 @@
+/usr/bin/cc -g CMakeFiles/EE367L_Lab03.dir/main.c.o -o EE367L_Lab03 
