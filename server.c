@@ -120,15 +120,16 @@ int main(void) {
         inet_ntop(their_addr.ss_family,get_in_addr((struct sockaddr *) &their_addr),s, sizeof s);
         printf("server: got connection from %s\n", s);
 
-        if ((numbytes = recv(sockfd, buff, MAXDATASIZE - 1, 0)) == -1) {
-            perror("recv");
-            exit(1);
-        }
-        buff[numbytes] = '\0';
-        printf("Server: received %s\n",buff);
+
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
+            if ((numbytes = recv(new_fd, buff, MAXDATASIZE - 1, 0)) == -1) {
+                perror("recv");
+                exit(1);
+            }
+            buff[numbytes] = '\0';
+            printf("Server: received %s\n",buff);
             if (send(new_fd, buff, sizeof buff, 0) == -1)
                 perror("send");
             close(new_fd);
