@@ -14,6 +14,7 @@
 #include <arpa/inet.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <ctype.h>
 
 #define PORT "3502"  // the port users will be connecting to
 
@@ -128,8 +129,11 @@ int main(void) {
                 perror("recv");
                 exit(1);
             }
-            buff[numbytes] = '\0';
+            buff[numbytes] = '\0';                  // Null terminate string
             printf("Server: received %s\n",buff);
+            for(int i = 0; buff[i] != '\n'; i++) {
+                buff[i] = toupper(buff[i]);
+            }
             if (send(new_fd, buff, sizeof buff, 0) == -1)
                 perror("send");
             close(new_fd);
