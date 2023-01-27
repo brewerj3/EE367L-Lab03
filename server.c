@@ -117,11 +117,8 @@ int main(void) {
             continue;
         }
 
-
-        inet_ntop(their_addr.ss_family,get_in_addr((struct sockaddr *) &their_addr),s, sizeof s);
+        inet_ntop(their_addr.ss_family, get_in_addr((struct sockaddr *) &their_addr), s, sizeof s);
         printf("server: got connection from %s\n", s);
-
-
 
         if (!fork()) { // this is the child process
             close(sockfd); // child doesn't need the listener
@@ -130,8 +127,8 @@ int main(void) {
                 exit(1);
             }
             buff[numbytes] = '\0';                  // Null terminate string
-            printf("Server: received %s\n",buff);
-            for(int i = 0; buff[i] != '\n'; i++) {
+            printf("Server: received %s\n", buff);
+            for (int i = 0; buff[i] != '\n'; i++) {
                 buff[i] = toupper(buff[i]);
             }
             if (send(new_fd, buff, sizeof buff, 0) == -1)
