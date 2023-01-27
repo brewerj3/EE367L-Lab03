@@ -63,7 +63,8 @@ CMAKE_BINARY_DIR = /tmp/tmp.Vt27FBWxga/cmake-build-debug
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/EE367L_Lab03.dir/all
+all: CMakeFiles/client.dir/all
+all: CMakeFiles/server.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +72,61 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/EE367L_Lab03.dir/clean
+clean: CMakeFiles/client.dir/clean
+clean: CMakeFiles/server.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/EE367L_Lab03.dir
+# Target rules for target CMakeFiles/client.dir
 
 # All Build rule for target.
-CMakeFiles/EE367L_Lab03.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/EE367L_Lab03.dir/build.make CMakeFiles/EE367L_Lab03.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/EE367L_Lab03.dir/build.make CMakeFiles/EE367L_Lab03.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/tmp/tmp.Vt27FBWxga/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target EE367L_Lab03"
-.PHONY : CMakeFiles/EE367L_Lab03.dir/all
+CMakeFiles/client.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/tmp/tmp.Vt27FBWxga/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target client"
+.PHONY : CMakeFiles/client.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/EE367L_Lab03.dir/rule: cmake_check_build_system
+CMakeFiles/client.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/tmp.Vt27FBWxga/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/EE367L_Lab03.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/client.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/tmp.Vt27FBWxga/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/EE367L_Lab03.dir/rule
+.PHONY : CMakeFiles/client.dir/rule
 
 # Convenience name for target.
-EE367L_Lab03: CMakeFiles/EE367L_Lab03.dir/rule
-.PHONY : EE367L_Lab03
+client: CMakeFiles/client.dir/rule
+.PHONY : client
 
 # clean rule for target.
-CMakeFiles/EE367L_Lab03.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/EE367L_Lab03.dir/build.make CMakeFiles/EE367L_Lab03.dir/clean
-.PHONY : CMakeFiles/EE367L_Lab03.dir/clean
+CMakeFiles/client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/clean
+.PHONY : CMakeFiles/client.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/server.dir
+
+# All Build rule for target.
+CMakeFiles/server.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/tmp/tmp.Vt27FBWxga/cmake-build-debug/CMakeFiles --progress-num=3,4 "Built target server"
+.PHONY : CMakeFiles/server.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/server.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/tmp.Vt27FBWxga/cmake-build-debug/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/server.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /tmp/tmp.Vt27FBWxga/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/server.dir/rule
+
+# Convenience name for target.
+server: CMakeFiles/server.dir/rule
+.PHONY : server
+
+# clean rule for target.
+CMakeFiles/server.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/clean
+.PHONY : CMakeFiles/server.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

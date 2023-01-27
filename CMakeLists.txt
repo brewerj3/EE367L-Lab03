@@ -3,4 +3,6 @@ project(EE367L_Lab03 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(EE367L_Lab03 main.c)
+add_executable(client client.c)
+
+add_executable(server server.c)
