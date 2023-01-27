@@ -113,9 +113,7 @@ int main(void) {
             continue;
         }
 
-        inet_ntop(their_addr.ss_family,
-                  get_in_addr((struct sockaddr *) &their_addr),
-                  s, sizeof s);
+        inet_ntop(their_addr.ss_family,get_in_addr((struct sockaddr *) &their_addr),s, sizeof s);
         printf("server: got connection from %s\n", s);
 
         if (!fork()) { // this is the child process

@@ -52,8 +52,7 @@ int main(int argc, char *argv[]) {
 
     // loop through all the results and connect to the first we can
     for (p = servinfo; p != NULL; p = p->ai_next) {
-        if ((sockfd = socket(p->ai_family, p->ai_socktype,
-                             p->ai_protocol)) == -1) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype,p->ai_protocol)) == -1) {
             perror("client: socket");
             continue;
         }
@@ -72,8 +71,7 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 
-    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr),
-              s, sizeof s);
+    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr),s, sizeof s);
     printf("client: connecting to %s\n", s);
 
     freeaddrinfo(servinfo); // all done with this structure
@@ -81,6 +79,10 @@ int main(int argc, char *argv[]) {
     if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
         perror("recv");
         exit(1);
+    }
+
+    if(argv[2] != NULL) {
+        send(sockfd,argv[2],sizeof(argv[2]),0);
     }
 
     buf[numbytes] = '\0';
