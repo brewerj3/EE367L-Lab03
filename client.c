@@ -36,7 +36,11 @@ int main(int argc, char *argv[]) {
 
     //printf("argv[2] is %s \n",argv[2]); argv is ./program 1 2 3
 
-    if (argc != 2) {
+    if (argc == 1) {
+        fprintf(stderr, "usage: client hostname\n");
+        exit(1);
+    }
+    if (argc > 3) {
         fprintf(stderr, "usage: client hostname\n");
         exit(1);
     }
@@ -80,8 +84,8 @@ int main(int argc, char *argv[]) {
 
     freeaddrinfo(servinfo); // all done with this structure
 
-    if(argv[1] != NULL) {                                           //Trying to send message to server
-        send(sockfd,argv[1],sizeof argv[1],0);
+    if(argv[2] != NULL) {                                           //Trying to send message to server
+        send(sockfd,argv[2],sizeof argv[2],0);
     }
 
     if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
