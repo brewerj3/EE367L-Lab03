@@ -127,7 +127,13 @@ int main(void) {
                 exit(1);
             }
             buff[numbytes] = '\0';                  // Null terminate string
+
             printf("Server: received %s\n", buff);
+
+            // First case of ls listing command to the server
+            if((buff[0] == 'l') && (buff[1] == 's')) {
+                system("ls");
+            }
             for (int i = 0; buff[i] != '\n'; i++) {
                 buff[i] = toupper(buff[i]);
             }
