@@ -131,7 +131,7 @@ int main(void) {
             printf("Server: received %s\n", buff);
 
             // First case of ls listing command to the server
-            if((buff[0] == 'l') && (buff[1] == 's')) {
+            if((buff[0] == 'l') && (buff[1] == 's')) {      // This outputs ls on the serveer
                 system("ls");
             }
             for (int i = 0; buff[i] != '\n'; i++) {
