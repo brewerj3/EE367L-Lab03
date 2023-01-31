@@ -136,7 +136,9 @@ int main(void) {
                 //int numberOfCharacters = system("ls | wc -m");
                 FILE *fp;
                 fp = popen("ls", "r");
-                fgets(buff,sizeof(buff),fp);
+                fgets(buff,sizeof(buff),(FILE*)fp);  //@TODO make this not stop after the first item in the string
+                pclose(fp);
+
             }
 
             if (send(new_fd, buff, sizeof buff, 0) == -1)
