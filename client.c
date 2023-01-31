@@ -34,14 +34,12 @@ int main(int argc, char *argv[]) {
     int rv;
     char s[INET6_ADDRSTRLEN];
 
-    //printf("argv[2] is %s \n",argv[2]); argv is ./program 1 2 3
-
     if (argc == 1) {
         fprintf(stderr, "usage: client hostname\n");
         exit(1);
     }
     if (argc > 3) {
-        fprintf(stderr, "usage: client hostname\n");
+        fprintf(stderr, "usage: too many arguments\n");
         exit(1);
     }
 
@@ -58,7 +56,7 @@ int main(int argc, char *argv[]) {
 
     // loop through all the results and connect to the first we can
     for (p = servinfo; p != NULL; p = p->ai_next) {
-        if ((sockfd = socket(p->ai_family, p->ai_socktype,p->ai_protocol)) == -1) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
             perror("client: socket");
             continue;
         }
@@ -78,21 +76,19 @@ int main(int argc, char *argv[]) {
     }
 
 
-
-    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr),s, sizeof s);
+    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
     printf("client: connecting to %s\n", s);
 
     freeaddrinfo(servinfo); // all done with this structure
 
-    if(argv[2] != NULL) {                                           //Trying to send message to server
-        send(sockfd,argv[2],sizeof(argv[2]),0);
+    if (argv[2] != NULL) {                                           //Trying to send message to server
+        send(sockfd, argv[2], sizeof(argv[2]), 0);
     }
 
     if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
         perror("recv");
         exit(1);
     }
-
 
 
     buf[numbytes] = '\0';

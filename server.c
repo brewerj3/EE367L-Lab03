@@ -132,11 +132,13 @@ int main(void) {
 
             // First case of ls listing command to the server
             if ((buff[0] == 'l') && (buff[1] == 's')) {      // This outputs ls on the server
-                system("ls");
+                // Get number of character
+                //int numberOfCharacters = system("ls | wc -m");
+                FILE *fp;
+                fp = popen("ls", "r");
+                fgets(buff,sizeof(buff),fp);
             }
-            for (int i = 0; buff[i] != '\n'; i++) {
-                buff[i] = toupper(buff[i]);
-            }
+
             if (send(new_fd, buff, sizeof buff, 0) == -1)
                 perror("send");
             close(new_fd);
