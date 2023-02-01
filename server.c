@@ -146,8 +146,6 @@ int main(void) {
                 pclose(fp);
             }
 
-
-
             // This sends the message to the client and prints an error if it fails
             if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
                 perror("send");

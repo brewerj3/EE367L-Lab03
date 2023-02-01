@@ -48,11 +48,11 @@ int main(int argc, char *argv[]) {
 
     // Client prompts user for a command
     printf("enter command:");
-    if(getline(&message, &len,stdin) == -1) {
+    if (getline(&message, &len, stdin) == -1) {
         fprintf(stderr, "usage: invalid\n");
         exit(1);
     }
-    printf("message to send is: %s",message);
+    printf("message to send is: %s", message);
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -75,7 +75,6 @@ int main(int argc, char *argv[]) {
             close(sockfd);
             continue;
         }
-
         break;
     }
 
@@ -84,16 +83,12 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 
-
     inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
     printf("client: connecting to %s\n", s);
-
     freeaddrinfo(servinfo); // all done with this structure
 
     // Send message to server
-    if (argv[1] != NULL) {
-        //strcpy(buf,message);
-        //printf("buf = %s",buf);
+    if (message != NULL) {
         send(sockfd, message, sizeof(strlen(message)), 0);
     }
 
