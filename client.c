@@ -91,7 +91,13 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "usage: invalid\n");
             exit(1);
         }
-        printf("message to send is: %s", message);                          //This is debug use
+        //printf("message is: %s", message);                          //This is debug use
+
+        // Check for quit command
+        if(strcmp(message, "quit") == 0) {
+            printf("Exiting client\n");
+            _exit(0);
+        }
 
         // Send message to server
         if (message != NULL) {
