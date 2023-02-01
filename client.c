@@ -38,10 +38,21 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "usage: client hostname\n");
         exit(1);
     }
-    if (argc > 3) {
+    if (argc > 2) {
         fprintf(stderr, "usage: too many arguments\n");
         exit(1);
     }
+
+    char *message;
+    size_t len = 0;
+
+    // Client prompts user for a command
+    printf("enter command:");
+    if(getline(&message, &len,stdin) == -1) {
+        fprintf(stderr, "usage: invalid\n");
+        exit(1);
+    }
+    printf("message to send is: %s",message);
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -79,15 +90,15 @@ int main(int argc, char *argv[]) {
 
     freeaddrinfo(servinfo); // all done with this structure
 
-    if (argv[2] != NULL) {                                           //Trying to send message to server
-        send(sockfd, argv[2], sizeof(argv[2]), 0);
+    // Send message to server
+    if (argv[2] != NULL) {
+        send(sockfd, message, sizeof(argv[2]), 0);
     }
 
     if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
         perror("recv");
         exit(1);
     }
-
 
     buf[numbytes] = '\0';
 

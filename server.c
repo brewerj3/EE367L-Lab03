@@ -52,10 +52,7 @@ int main(void) {
     int yes = 1;
     char s[INET6_ADDRSTRLEN];
     char buff[MAXDATASIZE];
-    char msgToSend[MAXDATASIZE];
-    for(int i = 0; i <= MAXDATASIZE; i++) {
-        msgToSend[i] = 0;
-    }
+
     int rv;
 
     memset(&hints, 0, sizeof hints);
@@ -70,14 +67,12 @@ int main(void) {
 
     // loop through all the results and bind to the first we can
     for (p = servinfo; p != NULL; p = p->ai_next) {
-        if ((sockfd = socket(p->ai_family, p->ai_socktype,
-                             p->ai_protocol)) == -1) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
             perror("server: socket");
             continue;
         }
 
-        if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes,
-                       sizeof(int)) == -1) {
+        if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
             perror("setsockopt");
             exit(1);
         }
@@ -134,28 +129,32 @@ int main(void) {
 
             printf("Server: received %s\n", buff);
 
-            // First case of ls listing command to the server
-            if ((buff[0] == 'l') && (buff[1] == 's')) {      // This outputs ls on the server
-                // Get number of character
-                //int numberOfCharacters = system("ls | wc -m");
-                FILE *fp;
-                fp = popen("ls", "r");
-                //fgets(buff,sizeof(buff),(FILE*)fp);  //@TODO make this not stop after the first item in the string
-                //Testing print contents of file
-                while(fgets(buff, sizeof(buff), fp) != NULL) {
-                    strncat(msgToSend, buff,sizeof(msgToSend) - strlen(msgToSend) - 1);
-                    printf("%s",buff);
-                }
-                pclose(fp);
-
+            // Create a string to hold the message to send
+            char msgToSend[MAXDATASIZE];
+            for (int i = 0; i <= MAXDATASIZE; i++) {
+                msgToSend[i] = 0;
             }
 
+            // Case of ls listing command to the server
+            if ((buff[0] == 'l') && (buff[1] == 's')) {      // This checks if command is ls
+                FILE *fp;
+                fp = popen("ls", "r");
+                while (fgets(buff, sizeof(buff), fp) != NULL) {
+                    strncat(msgToSend, buff, sizeof(msgToSend) - strlen(msgToSend) - 1);
+                    printf("%s", buff);
+                }
+                pclose(fp);
+            }
+
+
+
+            // This sends the message to the client and prints an error if it fails
             if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
                 perror("send");
             }
 
-            close(new_fd);
-            exit(0);
+            close(new_fd);     // close listener
+            exit(0);        // exit fork
         }
         close(new_fd);  // parent doesn't need this
     }
