@@ -91,8 +91,10 @@ int main(int argc, char *argv[]) {
     freeaddrinfo(servinfo); // all done with this structure
 
     // Send message to server
-    if (argv[2] != NULL) {
-        send(sockfd, message, sizeof(argv[2]), 0);
+    if (argv[1] != NULL) {
+        //strcpy(buf,message);
+        //printf("buf = %s",buf);
+        send(sockfd, message, sizeof(strlen(message)), 0);
     }
 
     if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
