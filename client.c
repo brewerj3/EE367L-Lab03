@@ -16,7 +16,8 @@
 
 #define PORT "3502" // the port client will be connecting to
 
-#define MAXDATASIZE 100 // max number of bytes we can get at once 
+
+#define MAXDATASIZE 100 // max number of bytes we can get at once
 
 // get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa) {
@@ -42,9 +43,6 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "usage: too many arguments\n");
         exit(1);
     }
-
-
-
 
 
     memset(&hints, 0, sizeof hints);
@@ -84,7 +82,7 @@ int main(int argc, char *argv[]) {
     char *message;
     size_t len = 0;
     // Enter While loop of asking for user input and sending it to the server
-    while(1) {
+    while (1) {
         // Client prompts user for a command
         printf("enter command:");
         if (getline(&message, &len, stdin) == -1) {
@@ -94,9 +92,9 @@ int main(int argc, char *argv[]) {
         //printf("message is: %s", message);                          //This is debug use
 
         // Check for quit command
-        if(strcmp(message, "quit") == 0) {
-            printf("Exiting client\n");
-            _exit(0);
+        if (strcmp(message, "quit\n") == 0) {
+            printf("Quiting client\n");
+            break;
         }
 
         // Send message to server
