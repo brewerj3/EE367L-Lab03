@@ -43,16 +43,9 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-    char *message;
-    size_t len = 0;
 
-    // Client prompts user for a command
-    printf("enter command:");
-    if (getline(&message, &len, stdin) == -1) {
-        fprintf(stderr, "usage: invalid\n");
-        exit(1);
-    }
-    printf("message to send is: %s", message);
+
+
 
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
@@ -83,24 +76,38 @@ int main(int argc, char *argv[]) {
         return 2;
     }
 
+
     inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
     printf("client: connecting to %s\n", s);
     freeaddrinfo(servinfo); // all done with this structure
 
-    // Send message to server
-    if (message != NULL) {
-        send(sockfd, message, sizeof(strlen(message)), 0);
+    char *message;
+    size_t len = 0;
+    // Enter While loop of asking for user input and sending it to the server
+    while(1) {
+        // Client prompts user for a command
+        printf("enter command:");
+        if (getline(&message, &len, stdin) == -1) {
+            fprintf(stderr, "usage: invalid\n");
+            exit(1);
+        }
+        printf("message to send is: %s", message);                          //This is debug use
+
+        // Send message to server
+        if (message != NULL) {
+            send(sockfd, message, sizeof(strlen(message)), 0);
+        }
+
+        // Receive message from server
+        if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
+            perror("recv");
+            exit(1);
+        }
+
+        buf[numbytes] = '\0';   // This terminates the string
+
+        printf("client: received '%s'\n", buf);
     }
-
-    if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
-        perror("recv");
-        exit(1);
-    }
-
-    buf[numbytes] = '\0';
-
-    printf("client: received '%s'\n", buf);
-
     close(sockfd);
 
     return 0;
