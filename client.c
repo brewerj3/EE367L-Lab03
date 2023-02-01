@@ -52,8 +52,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    //send(sockfd,argv[1],sizeof(argv[1]),0);
-
     // loop through all the results and connect to the first we can
     for (p = servinfo; p != NULL; p = p->ai_next) {
         if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {

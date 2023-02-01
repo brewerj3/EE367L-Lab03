@@ -52,6 +52,10 @@ int main(void) {
     int yes = 1;
     char s[INET6_ADDRSTRLEN];
     char buff[MAXDATASIZE];
+    char msgToSend[MAXDATASIZE];
+    for(int i = 0; i <= MAXDATASIZE; i++) {
+        msgToSend[i] = 0;
+    }
     int rv;
 
     memset(&hints, 0, sizeof hints);
@@ -136,13 +140,20 @@ int main(void) {
                 //int numberOfCharacters = system("ls | wc -m");
                 FILE *fp;
                 fp = popen("ls", "r");
-                fgets(buff,sizeof(buff),(FILE*)fp);  //@TODO make this not stop after the first item in the string
+                //fgets(buff,sizeof(buff),(FILE*)fp);  //@TODO make this not stop after the first item in the string
+                //Testing print contents of file
+                while(fgets(buff, sizeof(buff), fp) != NULL) {
+                    strncat(msgToSend, buff,sizeof(msgToSend) - strlen(msgToSend) - 1);
+                    printf("%s",buff);
+                }
                 pclose(fp);
 
             }
 
-            if (send(new_fd, buff, sizeof buff, 0) == -1)
+            if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
                 perror("send");
+            }
+
             close(new_fd);
             exit(0);
         }
