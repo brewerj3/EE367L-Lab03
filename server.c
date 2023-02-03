@@ -131,7 +131,7 @@ int main(void) {
 
             // Create a string to hold the message to send
             char msgToSend[MAXDATASIZE];
-            for (int i = 0; i <= MAXDATASIZE; i++) {
+            for (int i = 0; i < MAXDATASIZE; i++) {
                 msgToSend[i] = 0;
             }
 
