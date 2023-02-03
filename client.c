@@ -89,20 +89,32 @@ int main(int argc, char *argv[]) {
             fprintf(stderr, "usage: invalid\n");
             exit(1);
         }
-        //printf("message is: %s", message);                          //This is debug use
+        printf("message is: %s", message);                          //This is debug use
 
         // Check for h or help to print help then continue the program.
-        if(strcmp(message, "h\n") == 0) {
-            printf("quit - quit this client program and exits to the console.\n");
-            printf("ls   - print the contents of the current directory to the current console\n");
-            printf("h    - prints this help page\n");
-            continue;
-        }
+
 
         // Check for quit command
         if (strcmp(message, "quit\n") == 0) {
             printf("Quiting client\n");
             break;
+        }
+        // Check for ls command then 'encode' to L
+        else if(strcmp(message, "ls\n") == 0) {
+            strcpy(message, "L\n");
+        }
+        // check for help command then print helpful list of commands then restart loop
+        else if(strcmp(message, "h\n") == 0) {
+            printf("quit  - quit this client program and exit to the console.\n");
+            printf("check - check if file exists in current directory");
+            printf("ls    - print the contents of the current directory to the current console\n");
+            printf("h     - prints this help page\n");
+            continue;
+        }
+        // Print this if command is not recognized then restart loop
+        else {
+            printf("Command not recognized\n");
+            continue;
         }
 
         // Send message to server

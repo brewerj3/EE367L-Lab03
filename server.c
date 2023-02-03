@@ -136,16 +136,20 @@ int main(void) {
             }
 
             // Case of ls listing command to the server
-            if ((buff[0] == 'l') && (buff[1] == 's')) {      // This checks if command is ls
+            if (strncmp(buff, "L", 1) == 0) {      // This checks if command is ls
                 FILE *fp;
-                //execl(".", "ls",NULL);
+                execl(".", "ls",NULL);
                 fp = popen("ls", "r");
                 while (fgets(buff, sizeof(buff), fp) != NULL) {
                     strncat(msgToSend, buff, sizeof(msgToSend) - strlen(msgToSend) - 1);
                     printf("%s", buff);
                 }
                 pclose(fp);
+            } else {
+                // if command not recognized
+                strcpy(msgToSend, "unknown command\n");
             }
+
 
             // This sends the message to the client and prints an error if it fails
             if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
