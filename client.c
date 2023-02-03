@@ -91,6 +91,14 @@ int main(int argc, char *argv[]) {
         }
         //printf("message is: %s", message);                          //This is debug use
 
+        // Check for h or help to print help then continue the program.
+        if(strcmp(message, "h\n") == 0) {
+            printf("quit - quit this client program and exits to the console.\n");
+            printf("ls   - print the contents of the current directory to the current console\n");
+            printf("h    - prints this help page\n");
+            continue;
+        }
+
         // Check for quit command
         if (strcmp(message, "quit\n") == 0) {
             printf("Quiting client\n");
