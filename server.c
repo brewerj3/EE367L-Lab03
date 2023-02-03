@@ -145,11 +145,12 @@ int main(void) {
                     printf("%s", buff);
                 }
                 pclose(fp);
-            } else {
-                // if command not recognized
-                strcpy(msgToSend, "unknown command\n");
             }
-
+            // If command is not recognized close the child
+            else {
+                close(new_fd);
+                exit(1);
+            }
 
             // This sends the message to the client and prints an error if it fails
             if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {

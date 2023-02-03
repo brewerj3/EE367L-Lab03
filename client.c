@@ -16,6 +16,7 @@
 
 #define PORT "3502" // the port client will be connecting to
 
+//#define DEBUG
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once
 
@@ -84,23 +85,24 @@ int main(int argc, char *argv[]) {
     // Enter While loop of asking for user input and sending it to the server
     while (1) {
         // Client prompts user for a command
-        printf("enter command:");
+        printf("Command(enter 'h' for help) :");
         if (getline(&message, &len, stdin) == -1) {
             fprintf(stderr, "usage: invalid\n");
             exit(1);
         }
-        printf("message is: %s", message);                          //This is debug use
-
-        // Check for h or help to print help then continue the program.
-
-
+#ifdef DEBUG
+        //This is debug use
+        printf("message is: %s", message);
+#endif
         // Check for quit command
         if (strcmp(message, "quit\n") == 0) {
+            // Quit the client by ending the loop
             printf("Quiting client\n");
             break;
         }
-        // Check for ls command then 'encode' to L
+        // Check for ls command
         else if(strcmp(message, "ls\n") == 0) {
+            // 'encode' ls to L
             strcpy(message, "L\n");
         }
         // check for help command then print helpful list of commands then restart loop
