@@ -16,7 +16,7 @@
 
 #define PORT "3502" // the port client will be connecting to
 
-//#define DEBUG
+#define DEBUG
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once
 
@@ -105,10 +105,24 @@ int main(int argc, char *argv[]) {
             // 'encode' ls to L
             strcpy(message, "L\n");
         }
+        // Check for check command
+        else if(strncmp(message, "check\n",4) == 0) {
+            // Change message from starting with check to C
+            for(int j = 0; j < 4; j++) {
+                for (int i = 1; i < MAXDATASIZE; i++) {
+                    message[i-1] = message[i];
+                }
+            }
+            message[0] = 'C';
+#ifdef DEBUG
+            printf(" message to send %s\n",message);
+#endif
+            strcpy(message, message);
+        }
         // check for help command then print helpful list of commands then restart loop
         else if(strcmp(message, "h\n") == 0) {
             printf("quit  - quit this client program and exit to the console.\n");
-            printf("check - check if file exists in current directory");
+            printf("check - check if file exists in current directory.\n");
             printf("ls    - print the contents of the current directory to the current console\n");
             printf("h     - prints this help page\n");
             continue;

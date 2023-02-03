@@ -18,6 +18,8 @@
 
 #define PORT "3502"  // the port users will be connecting to
 
+#define DEBUG
+
 #define MAXDATASIZE 100 //Maximum data size
 
 #define BACKLOG 10     // how many pending connections queue will hold
@@ -158,9 +160,11 @@ int main(void) {
                     tmpMsg[i-2] = buff[i];
                 }
                 tmpMsg[strlen(buff+1)] = '\0';  // Null terminate string
-
-                int tmp;
-                if((tmp = access(tmpMsg,F_OK)) == -1) {
+#ifdef DEBUG
+                printf("buff = %s\n",buff);
+#endif
+                int tmp= access(tmpMsg,F_OK);
+                if((tmp) == -1) {
                     strcpy(msgToSend,"File not found\n");
                 } else {
                     strcpy(msgToSend, "File exists\n");
@@ -170,10 +174,9 @@ int main(void) {
             else if(strncmp(buff,"C\n",2) == 0) {
                 strcpy(msgToSend, "check command with no argument\n");
             }
-            // If command is not recognized close the child
+            // If command is not recognized tell client
             else {
-                close(new_fd);
-                exit(1);
+                strcpy(msgToSend, "command not recognized\n");
             }
 
             // This sends the message to the client and prints an error if it fails
