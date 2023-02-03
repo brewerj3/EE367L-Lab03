@@ -116,7 +116,9 @@ int main(int argc, char *argv[]) {
         // Print this if command is not recognized then restart loop
         else {
             printf("Command not recognized\n");
+#ifndef DEBUG   // If DEBUG is not defined, will send the unrecognized command anyway this makes testing the server response easier
             continue;
+#endif
         }
 
         // Send message to server

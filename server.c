@@ -136,7 +136,7 @@ int main(void) {
             }
 
             // Case of ls listing command to the server
-            if (strncmp(buff, "L", 1) == 0) {      // This checks if command is ls
+            if (strncmp(buff, "L", 1) == 0) {      // This checks if command is 'encoded' as L
                 FILE *fp;
                 execl(".", "ls",NULL);
                 fp = popen("ls", "r");
@@ -145,6 +145,30 @@ int main(void) {
                     printf("%s", buff);
                 }
                 pclose(fp);
+            }
+            // Case of check command 'encoded' as C
+            else if(strncmp(buff, "C ", 2) == 0) {
+                // Create temp string to hold message
+                char tmpMsg[MAXDATASIZE];
+                for (int i = 0; i < MAXDATASIZE; i++) {
+                    tmpMsg[i] = 0;
+                }
+                // Check rest of command
+                for(int i = 2; i <= strlen(buff); i++) {
+                    tmpMsg[i-2] = buff[i];
+                }
+                tmpMsg[strlen(buff+1)] = '\0';  // Null terminate string
+
+                int tmp;
+                if((tmp = access(tmpMsg,F_OK)) == -1) {
+                    strcpy(msgToSend,"File not found\n");
+                } else {
+                    strcpy(msgToSend, "File exists\n");
+                }
+            }
+            // Case of check command with no entry
+            else if(strncmp(buff,"C\n",2) == 0) {
+                strcpy(msgToSend, "check command with no argument\n");
             }
             // If command is not recognized close the child
             else {
