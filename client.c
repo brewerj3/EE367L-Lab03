@@ -16,7 +16,7 @@
 
 #define PORT "3502" // the port client will be connecting to
 
-#define DEBUG
+//#define DEBUG
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once
 
@@ -80,10 +80,11 @@ int main(int argc, char *argv[]) {
     printf("client: connecting to %s\n", s);
     freeaddrinfo(servinfo); // all done with this structure
 
-    char *message;
-    size_t len = 0;
+
     // Enter While loop of asking for user input and sending it to the server
     while (1) {
+        char *message;
+        size_t len = 0;
         // Client prompts user for a command
         printf("Command(enter 'h' for help) :");
         if (getline(&message, &len, stdin) == -1) {
@@ -149,6 +150,7 @@ int main(int argc, char *argv[]) {
         buf[numbytes] = '\0';   // This terminates the string
 
         printf("client: received '%s'\n", buf);
+        free(message);
     }
     close(sockfd);
 

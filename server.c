@@ -162,8 +162,9 @@ int main(void) {
                 tmpMsg[strlen(buff+1)] = '\0';  // Null terminate string
 #ifdef DEBUG
                 printf("buff = %s\n",buff);
+                printf("message to client = %s\n",tmpMsg);
 #endif
-                int tmp= access(tmpMsg,F_OK);
+                int tmp = access(tmpMsg,F_OK);
                 if((tmp) == -1) {
                     strcpy(msgToSend,"File not found\n");
                 } else {
