@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
 
         // Send message to server
         if (message != NULL) {
-            send(sockfd, message, strlen(message), 0); // @TODO this does not send the correct lenght when used with the check command
+            send(sockfd, message, strlen(message), 0);
         }
 
         // Receive message from server
