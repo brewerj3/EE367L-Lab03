@@ -16,7 +16,7 @@
 
 #define PORT "3502" // the port client will be connecting to
 
-//#define DEBUG
+#define DEBUG
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once
 
@@ -103,6 +103,9 @@ int main(int argc, char *argv[]) {
         }
         // Check for ls command
         else if(strcmp(message, "ls\n") == 0) {
+#ifdef DEBUG
+            printf("sending ls command\n");
+#endif
             // 'encode' ls to L
             strcpy(message, "L\n");
         }
@@ -115,10 +118,8 @@ int main(int argc, char *argv[]) {
                 }
             }
             message[0] = 'C';
-#ifdef DEBUG
-            printf(" message to send %s\n",message);
-#endif
-            strcpy(message, message);
+
+            //strcpy(message, message);
         }
         // check for help command then print helpful list of commands then restart loop
         else if(strcmp(message, "h\n") == 0) {
@@ -136,9 +137,13 @@ int main(int argc, char *argv[]) {
 #endif
         }
 
+#ifdef DEBUG
+        printf(" message to send %s\n",message);
+#endif
+
         // Send message to server
         if (message != NULL) {
-            send(sockfd, message, sizeof(strlen(message)), 0);
+            send(sockfd, message, strlen(message), 0); // @TODO this does not send the correct lenght when used with the check command
         }
 
         // Receive message from server
@@ -150,7 +155,7 @@ int main(int argc, char *argv[]) {
         buf[numbytes] = '\0';   // This terminates the string
 
         printf("client: received '%s'\n", buf);
-        free(message);
+        memset(&message, 0, sizeof(message));
     }
     close(sockfd);
 

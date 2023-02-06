@@ -151,18 +151,24 @@ int main(void) {
             // Case of check command 'encoded' as C
             else if(strncmp(buff, "C ", 2) == 0) {
                 // Create temp string to hold message
+#ifdef DEBUG
+                printf("Attempt to access %s \n", buff);
+#endif
                 char tmpMsg[MAXDATASIZE];
                 for (int i = 0; i < MAXDATASIZE; i++) {
                     tmpMsg[i] = 0;
                 }
                 // Check rest of command
-                for(int i = 2; i <= strlen(buff); i++) {
+
+                for (int i = 2; i < MAXDATASIZE; i++) {
                     tmpMsg[i-2] = buff[i];
                 }
-                tmpMsg[strlen(buff+1)] = '\0';  // Null terminate string
+
+                tmpMsg[strlen(tmpMsg)-1] = '\0';  // Null terminate string
 #ifdef DEBUG
                 printf("buff = %s\n",buff);
-                printf("message to client = %s\n",tmpMsg);
+                printf("temp msg = %s\n",tmpMsg);
+                printf("length of tmpMsg = %lu \n",strlen(tmpMsg));
 #endif
                 int tmp = access(tmpMsg,F_OK);
                 if((tmp) == -1) {
