@@ -99,6 +99,7 @@ int main(int argc, char *argv[]) {
         printf("message is: %s", message);
 #endif
 
+        // if else decision tree for processing user input
         // Check for quit command
         if (strcmp(message, "quit\n") == 0) {
             // Quit the client by ending the loop
@@ -142,6 +143,7 @@ int main(int argc, char *argv[]) {
         }
 
 #ifdef DEBUG
+        // Print the message being sent to server for debugging purposes
         printf(" message to send %s\n",message);
 #endif
 

@@ -162,7 +162,6 @@ int main(void) {
                     tmpMsg[i] = 0;
                 }
                 // Check rest of command
-
                 for (int i = 2; i < MAXDATASIZE; i++) {
                     tmpMsg[i-2] = buff[i];
                 }
@@ -188,7 +187,9 @@ int main(void) {
             else {
                 strcpy(msgToSend, "command not recognized\n");
             }
-
+#ifdef DEBUG
+            printf("sending message to client: %s\n",msgToSend);
+#endif
             // This sends the message to the client and prints an error if it fails
             if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
                 perror("send");
