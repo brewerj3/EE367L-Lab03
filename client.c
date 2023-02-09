@@ -80,21 +80,25 @@ int main(int argc, char *argv[]) {
     printf("client: connecting to %s\n", s);
     freeaddrinfo(servinfo); // all done with this structure
 
-
+    char *message;
+    size_t len = 0;
     // Enter While loop of asking for user input and sending it to the server
     while (1) {
-        char *message;
-        size_t len = 0;
+        // Empty message of any data
+        memset(&message, 0, sizeof(message));
+
         // Client prompts user for a command
         printf("Command(enter 'h' for help) :");
         if (getline(&message, &len, stdin) == -1) {
             fprintf(stderr, "usage: invalid\n");
             exit(1);
         }
+
 #ifdef DEBUG
         //This is debug use
         printf("message is: %s", message);
 #endif
+
         // Check for quit command
         if (strcmp(message, "quit\n") == 0) {
             // Quit the client by ending the loop
@@ -145,6 +149,7 @@ int main(int argc, char *argv[]) {
         if (message != NULL) {
             send(sockfd, message, strlen(message), 0);
         }
+        memset(&message, 0, sizeof(message));
 
         // Receive message from server
         if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
@@ -153,9 +158,8 @@ int main(int argc, char *argv[]) {
         }
 
         buf[numbytes] = '\0';   // This terminates the string
-
         printf("client: received '%s'\n", buf);
-        memset(&message, 0, sizeof(message));
+
     }
     close(sockfd);
 

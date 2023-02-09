@@ -146,6 +146,9 @@ int main(void) {
                     strncat(msgToSend, buff, sizeof(msgToSend) - strlen(msgToSend) - 1);
                     printf("%s", buff);
                 }
+#ifdef DEBUG
+                printf("closing FILE\n");
+#endif
                 pclose(fp);
             }
             // Case of check command 'encoded' as C
@@ -190,6 +193,10 @@ int main(void) {
             if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
                 perror("send");
             }
+
+#ifdef DEBUG
+            printf("now closing listener and exiting fork\n");
+#endif
 
             close(new_fd);     // close listener
             exit(0);        // exit fork
