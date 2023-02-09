@@ -187,9 +187,11 @@ int main(void) {
             else {
                 strcpy(msgToSend, "command not recognized\n");
             }
+
 #ifdef DEBUG
             printf("sending message to client: %s\n",msgToSend);
 #endif
+
             // This sends the message to the client and prints an error if it fails
             if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
                 perror("send");
