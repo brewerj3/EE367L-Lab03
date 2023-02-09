@@ -30,7 +30,7 @@ void *get_in_addr(struct sockaddr *sa) {
 }
 
 int main(int argc, char *argv[]) {
-    int sockfd, numbytes, tmp_fd;
+    int sockfd, numbytes, firstTime = 1;
     char buf[MAXDATASIZE];
     struct addrinfo hints, *servinfo, *p;
     int rv;
@@ -77,7 +77,10 @@ int main(int argc, char *argv[]) {
 
 
         inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
-        printf("client: connecting to %s\n", s);
+        if(firstTime == 1) {
+            printf("client: connecting to %s\n", s);
+        }
+        firstTime = 0;
         freeaddrinfo(servinfo); // all done with this structure
 
         char *message;
