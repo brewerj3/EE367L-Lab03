@@ -79,8 +79,9 @@ int main(int argc, char *argv[]) {
         inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
         if(firstTime == 1) {
             printf("client: connecting to %s\n", s);
+            firstTime = 0;
         }
-        firstTime = 0;
+
         freeaddrinfo(servinfo); // all done with this structure
 
         char *message;
@@ -151,7 +152,8 @@ int main(int argc, char *argv[]) {
 
         pid_t child_pd, parent_pid;
         int status = 0;
-        if((child_pd = fork()) == 0) { // Child process sends message to server
+        // Child process sends message to server
+        if((child_pd = fork()) == 0) {
             // Send message to server
             if (message != NULL) {
                 send(sockfd, message, strlen(message), 0);
