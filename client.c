@@ -87,7 +87,6 @@ int main(int argc, char *argv[]) {
         }
 
 
-
         char *message;
         size_t len = 0;
         // Enter While loop of asking for user input and sending it to the server
@@ -188,8 +187,7 @@ int main(int argc, char *argv[]) {
                     }
                     buf[numbytes] = '\0';   // This terminates the string
                     printf("%s", buf);
-                    //system(buf);
-                } while(numbytes > 0 );
+                } while (numbytes > 0);
 
                 close(sockfd);
                 exit(0);
