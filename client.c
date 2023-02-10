@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
             printf("quit    - quit this client program and exit to the console.\n");
             printf("check   - check if file exists in current directory.\n");
             printf("ls      - print the contents of the current directory to the current console\n");
-            printf("display - this attempts to display the contents of a file\n");
+            printf("display - this attempts to display the contents of a file(under construction)\n");
             printf("h       - prints this help page\n");
             continue;
         }
