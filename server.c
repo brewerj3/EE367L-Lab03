@@ -153,9 +153,8 @@ int main(void) {
             }
             // Case of check command 'encoded' as C
             else if(strncmp(buff, "C ", 2) == 0) {
-
 #ifdef DEBUG
-                printf("Attempt to access %s \n", buff);
+                printf("Attempt to check if %s exists \n", buff);
 #endif
                 // Create temp string to hold message
                 char tmpMsg[MAXDATASIZE];
