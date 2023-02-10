@@ -156,6 +156,20 @@ int main(int argc, char *argv[]) {
             }
             message[0] = 'P';
         }
+        // Check for download command
+        else if (strncmp(message, "download\n",8) == 0) {
+            if(message[8] == '\n') {
+                printf("download command has no argument \n");
+                continue;
+            }
+            // Shift message to the left then replace first character with D
+            for (int j = 0; j < 7; j++) {
+                for (int i = 1; i < MAXDATASIZE; i++) {
+                    message[i - 1] = message[i];
+                }
+            }
+            message[0] = 'D';
+        }
             // Print this if command is not recognized then restart loop
         else {
             printf("Command not recognized\n");
@@ -192,9 +206,30 @@ int main(int argc, char *argv[]) {
                 close(sockfd);
                 exit(0);
             }
+            if (strncmp(message, "D \n", 2) == 0) {
+                FILE *filePtr;
+                for (int j = 0; j < 2; j++) {
+                    for (int i = 1; i < MAXDATASIZE; i++) {
+                        message[i - 1] = message[i];
+                    }
+                }
+                filePtr = fopen(message,"a");
+                do {
+                    if ((numbytes = read(sockfd, buf, MAXDATASIZE - 1)) == -1) {
+                        perror("recv");
+                        exit(1);
+                    }
+                    buf[numbytes] = '\0';   // This terminates the string
+
+                    fprintf(filePtr,"%s", buf);
+                } while (numbytes > 0);
+                fclose(filePtr);
+                close(sockfd);
+                exit(0);
+            }
 
                 // Receive message from server
-            else if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
+            if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
                 perror("recv");
                 exit(1);
             }

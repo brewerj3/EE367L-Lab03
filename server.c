@@ -185,7 +185,7 @@ int main(void) {
                 strcpy(msgToSend, "check command with no argument\0");
             }
             // Case of display command 'encoded' as P
-            else if(strncmp(buff,"P ",2) == 0) {
+            else if(strncmp(buff,"P ",2) == 0 || strncmp(buff, "D ",2) == 0) {
 
 #ifdef DEBUG
                 // Print buff when debugging
@@ -257,6 +257,9 @@ int main(void) {
             // Case of display command with no entry
             else if(strncmp(buff,"P\n",2) == 0) {
                 strcpy(msgToSend, "display command with no argument\0");
+            }
+            else if(strncmp(buff, "D\n",2) == 0) {
+                strcpy(msgToSend, "download command with no argument\0");
             }
             // If command is not recognized tell client
             else {
