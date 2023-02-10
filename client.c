@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
             firstTime = 0;
         }
 
-        freeaddrinfo(servinfo); // all done with this structure
+
 
         char *message;
         size_t len = 0;
@@ -182,14 +182,14 @@ int main(int argc, char *argv[]) {
 
             if (strncmp(message, "P \n", 2) == 0) {
                 do {
-                    if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
+                    if ((numbytes = read(sockfd, buf, MAXDATASIZE - 1)) == -1) {
                         perror("recv");
                         exit(1);
                     }
                     buf[numbytes] = '\0';   // This terminates the string
-                    printf("client: receive '%s'\n", buf);
+                    printf("%s", buf);
                     //system(buf);
-                } while(numbytes <= 0 );
+                } while(numbytes > 0 );
 
                 close(sockfd);
                 exit(0);
@@ -213,6 +213,7 @@ int main(int argc, char *argv[]) {
         while ((parent_pid = wait(&status)) > 0);
         close(sockfd);
     }
+    freeaddrinfo(servinfo); // all done with this structure
     close(sockfd);
     return 0;
 }
