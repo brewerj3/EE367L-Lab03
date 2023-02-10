@@ -77,6 +77,7 @@ int main(int argc, char *argv[]) {
 
 
         inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
+        // Only display on the first connection
         if(firstTime == 1) {
             printf("client: connecting to %s\n", s);
             firstTime = 0;
@@ -127,8 +128,6 @@ int main(int argc, char *argv[]) {
                 }
             }
             message[0] = 'C';
-
-            //strcpy(message, message);
         }
             // check for help command then print helpful list of commands then restart loop
         else if (strcmp(message, "h\n") == 0) {
@@ -138,6 +137,22 @@ int main(int argc, char *argv[]) {
             printf("display - this attempts to display the contents of a file(under construction)\n");
             printf("h       - prints this help page\n");
             continue;
+        }
+        // Check for display command
+        else if (strncmp(message, "display\n",7) == 0) {
+            // Check if display has any arguments
+            if(message[7] == '\n') {
+                printf("display command has no argument \n");
+                continue;
+            }
+
+            // Shift message to the left then replace first character with P
+            for (int j = 0; j < 6; j++) {
+                for (int i = 1; i < MAXDATASIZE; i++) {
+                    message[i - 1] = message[i];
+                }
+            }
+            message[0] = 'P';
         }
             // Print this if command is not recognized then restart loop
         else {
