@@ -90,7 +90,6 @@ int main(int argc, char *argv[]) {
         char *message;
         size_t len = 0;
         message = (char *) malloc (MAXDATASIZE);
-        // Enter While loop of asking for user input and sending it to the server
 
         // Empty message of any data
         //memset(&message, 0, sizeof(message));
@@ -107,7 +106,7 @@ int main(int argc, char *argv[]) {
         printf("message is: %s", message);
 #endif
 
-        // if else decision tree for processing user input
+        // else if decision tree for processing user input
         // Check for quit command
         if (strcmp(message, "quit\n") == 0) {
             // Quit the client by ending the loop
@@ -134,11 +133,12 @@ int main(int argc, char *argv[]) {
         }
             // check for help command then print helpful list of commands then restart loop
         else if (strcmp(message, "h\n") == 0) {
-            printf("quit    - quit this client program and exit to the console.\n");
-            printf("check   - check if file exists in current directory.\n");
-            printf("ls      - print the contents of the current directory to the current console\n");
-            printf("display - this attempts to display the contents of a file(under construction)\n");
-            printf("h       - prints this help page\n");
+            printf("quit     - quit this client program and exit to the console.\n");
+            printf("check    - check if file exists in current directory.\n");
+            printf("ls       - print the contents of the current directory to the current console\n");
+            printf("display  - this attempts to display the contents of a file\n");
+            printf("download - This downloads the named file to the client directory\n");
+            printf("h        - prints this help page\n");
             continue;
         }
             // Check for display command
@@ -214,10 +214,13 @@ int main(int argc, char *argv[]) {
                         message[i - 1] = message[i];
                     }
                 }
+                char plsMsg[strlen(message)+1];
+                plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
 #ifdef DEBUG
-                printf("file will be name %s\n",message);
+                printf("file will be name %s\n",plsMsg);
 #endif
-                filePtr = fopen(message,"a");
+                plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
+                filePtr = fopen(plsMsg,"w");
                 do {
                     if ((numbytes = read(sockfd, buf, MAXDATASIZE - 1)) == -1) {
                         perror("recv");
@@ -227,6 +230,7 @@ int main(int argc, char *argv[]) {
 
                     fprintf(filePtr,"%s", buf);
                 } while (numbytes > 0);
+                free(message);
                 fclose(filePtr);
                 close(sockfd);
                 exit(0);
