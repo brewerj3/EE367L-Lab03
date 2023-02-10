@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
 
         char *message;
         size_t len = 0;
-        message = (char *) malloc (MAXDATASIZE);
+        //çmessage = (char *) malloc (MAXDATASIZE);
 
         // Empty message of any data
         //memset(&message, 0, sizeof(message));
@@ -215,7 +215,8 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 char plsMsg[strlen(message)+1];
-                //plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
+                strcpy(plsMsg, message);
+                plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
 #ifdef DEBUG
                 printf("file will be name %s\n",plsMsg);
 #endif
@@ -227,14 +228,12 @@ int main(int argc, char *argv[]) {
                         exit(1);
                     }
                     buf[numbytes] = '\0';   // This terminates the string
-                    if(strcmp("File not Found\0",buf)) {
-                        free(message);
-                        fclose(filePtr);
-                        close(sockfd);
-                        exit(0);
+                    if(strcmp("File not Found\0",buf) == 0) {
+                        break;
                     }
                     fprintf(filePtr,"%s", buf);
                 } while (numbytes > 0);
+
                 free(message);
                 fclose(filePtr);
                 close(sockfd);
