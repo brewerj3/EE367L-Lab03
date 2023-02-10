@@ -225,7 +225,7 @@ int main(void) {
 
                     char tmpMsg2[MAXDATASIZE] = "cat \0";
 
-                    strncat(tmpMsg2, tmpMsg, strlen(tmpMsg2)+4);
+                    strcat(tmpMsg2, tmpMsg);
 #ifdef DEBUG
                     printf("tmpMsg2 = %s \n",tmpMsg2);
 #endif

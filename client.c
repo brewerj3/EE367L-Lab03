@@ -213,6 +213,9 @@ int main(int argc, char *argv[]) {
                         message[i - 1] = message[i];
                     }
                 }
+#ifdef DEBUG
+                printf("file will be name %s\n",message);
+#endif
                 filePtr = fopen(message,"a");
                 do {
                     if ((numbytes = read(sockfd, buf, MAXDATASIZE - 1)) == -1) {
