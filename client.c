@@ -132,10 +132,11 @@ int main(int argc, char *argv[]) {
         }
             // check for help command then print helpful list of commands then restart loop
         else if (strcmp(message, "h\n") == 0) {
-            printf("quit  - quit this client program and exit to the console.\n");
-            printf("check - check if file exists in current directory.\n");
-            printf("ls    - print the contents of the current directory to the current console\n");
-            printf("h     - prints this help page\n");
+            printf("quit    - quit this client program and exit to the console.\n");
+            printf("check   - check if file exists in current directory.\n");
+            printf("ls      - print the contents of the current directory to the current console\n");
+            printf("display - this attempts to display the contents of a file\n");
+            printf("h       - prints this help page\n");
             continue;
         }
             // Print this if command is not recognized then restart loop
