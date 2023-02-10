@@ -202,6 +202,7 @@ int main(void) {
                 for (int i = 2; i< MAXDATASIZE; i++) {
                     tmpMsg[i-2] = buff[i];
                 }
+
                 // Null terminate string
                 tmpMsg[strlen(tmpMsg)-1] = '\0';
 
@@ -215,11 +216,21 @@ int main(void) {
                 if((tmp) == -1) {
                     strcpy(msgToSend, "File not Found\0");
                 }
+
                 // The file exists, so now attempt to send the contents to the user
                 else {
-                    char *tmpMsg2 = "cat \0";
-                    strncat(tmpMsg2, tmpMsg, strlen(tmpMsg2));
-                    FILE *fp;
+#ifdef DEBUG
+                    printf("now trying to read File");
+#endif
+
+                    char tmpMsg2[MAXDATASIZE] = "cat \0";
+                    strncat(tmpMsg2, tmpMsg, strlen(tmpMsg2)+4);
+
+#ifdef DEBUG
+                    printf("tmpMsg2 = %s \n",tmpMsg2);
+#endif
+                    system(tmpMsg2);
+                    /*FILE *fp;
                     fp = popen(tmpMsg2, "r");
                     while (fgets(buff, sizeof(buff), fp) != NULL) {
                         strncat(msgToSend, buff, sizeof(msgToSend) - strlen(msgToSend) - 1);
@@ -228,8 +239,7 @@ int main(void) {
 #ifdef DEBUG
                     printf("closing FILE\n");
 #endif
-                    pclose(fp);
-
+                    pclose(fp);*/
                 }
 
             }

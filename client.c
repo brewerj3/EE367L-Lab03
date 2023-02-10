@@ -29,6 +29,9 @@ void *get_in_addr(struct sockaddr *sa) {
     return &(((struct sockaddr_in6 *) sa)->sin6_addr);
 }
 
+char * shiftString(int n, char str1[], char str2 []);
+
+
 int main(int argc, char *argv[]) {
     int sockfd, numbytes, firstTime = 1;
     char buf[MAXDATASIZE];
