@@ -220,26 +220,44 @@ int main(void) {
                 // The file exists, so now attempt to send the contents to the user
                 else {
 #ifdef DEBUG
-                    printf("now trying to read File");
+                    printf("now trying to read File ");
 #endif
 
                     char tmpMsg2[MAXDATASIZE] = "cat \0";
+                    char currentDir[MAXDATASIZE];
+                    /*if (getcwd(currentDir, MAXDATASIZE-1) != NULL) {
+                        strcpy(buff, tmpMsg);
+                        strcpy(tmpMsg, currentDir);
+                    } else {
+                        perror("getcwd() error");
+                        close(new_fd);
+                        exit(0);
+                    }
                     strncat(tmpMsg2, tmpMsg, strlen(tmpMsg2)+4);
+                    strcat(tmpMsg2,"/");
+                    strcat(tmpMsg2,buff);
+                    strcpy(msgToSend,tmpMsg2);*/
 
 #ifdef DEBUG
                     printf("tmpMsg2 = %s \n",tmpMsg2);
 #endif
                     system(tmpMsg2);
-                    /*FILE *fp;
+                    FILE *fp;
                     fp = popen(tmpMsg2, "r");
                     while (fgets(buff, sizeof(buff), fp) != NULL) {
-                        strncat(msgToSend, buff, sizeof(msgToSend) - strlen(msgToSend) - 1);
+                        strcpy(msgToSend, buff);
+                        if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
+                            perror("send");
+                        }
                         printf("%s", buff);
                     }
+
 #ifdef DEBUG
                     printf("closing FILE\n");
 #endif
-                    pclose(fp);*/
+                    pclose(fp);
+                    close(new_fd);
+                    exit(0);
                 }
 
             }

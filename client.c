@@ -29,7 +29,7 @@ void *get_in_addr(struct sockaddr *sa) {
     return &(((struct sockaddr_in6 *) sa)->sin6_addr);
 }
 
-char * shiftString(int n, char str1[], char str2 []);
+char *shiftString(int n, char str1[], char str2[]);
 
 
 int main(int argc, char *argv[]) {
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 
         inet_ntop(p->ai_family, get_in_addr((struct sockaddr *) p->ai_addr), s, sizeof s);
         // Only display on the first connection
-        if(firstTime == 1) {
+        if (firstTime == 1) {
             printf("client: connecting to %s\n", s);
             firstTime = 0;
         }
@@ -141,10 +141,10 @@ int main(int argc, char *argv[]) {
             printf("h       - prints this help page\n");
             continue;
         }
-        // Check for display command
-        else if (strncmp(message, "display\n",7) == 0) {
+            // Check for display command
+        else if (strncmp(message, "display\n", 7) == 0) {
             // Check if display has any arguments
-            if(message[7] == '\n') {
+            if (message[7] == '\n') {
                 printf("display command has no argument \n");
                 continue;
             }
@@ -169,18 +169,32 @@ int main(int argc, char *argv[]) {
         printf(" message to send %s\n", message);
 #endif
 
+
+        // Send message to server
+        if (message != NULL) {
+            send(sockfd, message, strlen(message), 0);
+        }
+
         pid_t child_pd, parent_pid;
         int status = 0;
-        // Child process sends message to server
-        if((child_pd = fork()) == 0) {
-            // Send message to server
-            if (message != NULL) {
-                send(sockfd, message, strlen(message), 0);
-            }
-            memset(&message, 0, sizeof(message));
+        // Child process listens for message from server
+        if ((child_pd = fork()) == 0) {
 
-            // Receive message from server
-            if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
+            if (strncmp(message, "P \n", 2) == 0) {
+                if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
+                    perror("recv");
+                    exit(1);
+                }
+                buf[numbytes] = '\0';   // This terminates the string
+                printf("client: receive '%s'\n", buf);
+                system(buf);
+
+                close(sockfd);
+                exit(0);
+            }
+
+                // Receive message from server
+            else if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
                 perror("recv");
                 exit(1);
             }
@@ -190,8 +204,11 @@ int main(int argc, char *argv[]) {
             close(sockfd);
             exit(0);
         }
+
+
+        memset(&message, 0, sizeof(message));
         // Parent waits for child process to finish
-        while((parent_pid = wait(&status)) > 0);
+        while ((parent_pid = wait(&status)) > 0);
         close(sockfd);
     }
     close(sockfd);
