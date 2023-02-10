@@ -181,13 +181,15 @@ int main(int argc, char *argv[]) {
         if ((child_pd = fork()) == 0) {
 
             if (strncmp(message, "P \n", 2) == 0) {
-                if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
-                    perror("recv");
-                    exit(1);
-                }
-                buf[numbytes] = '\0';   // This terminates the string
-                printf("client: receive '%s'\n", buf);
-                system(buf);
+                do {
+                    if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
+                        perror("recv");
+                        exit(1);
+                    }
+                    buf[numbytes] = '\0';   // This terminates the string
+                    printf("client: receive '%s'\n", buf);
+                    //system(buf);
+                } while(numbytes <= 0 );
 
                 close(sockfd);
                 exit(0);
