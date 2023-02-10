@@ -153,10 +153,11 @@ int main(void) {
             }
             // Case of check command 'encoded' as C
             else if(strncmp(buff, "C ", 2) == 0) {
-                // Create temp string to hold message
+
 #ifdef DEBUG
                 printf("Attempt to access %s \n", buff);
 #endif
+                // Create temp string to hold message
                 char tmpMsg[MAXDATASIZE];
                 for (int i = 0; i < MAXDATASIZE; i++) {
                     tmpMsg[i] = 0;
@@ -166,7 +167,8 @@ int main(void) {
                     tmpMsg[i-2] = buff[i];
                 }
 
-                tmpMsg[strlen(tmpMsg)-1] = '\0';  // Null terminate string
+                // Null terminate string
+                tmpMsg[strlen(tmpMsg)-1] = '\0';
 #ifdef DEBUG
                 printf("buff = %s\n",buff);
                 printf("temp msg = %s\n",tmpMsg);
@@ -185,6 +187,39 @@ int main(void) {
             }
             // Case of display command 'encoded' as P
             else if(strncmp(buff,"P ",2) == 0) {
+
+#ifdef DEBUG
+                // Print buff when debugging
+                printf("Attempt to display %s \n", buff);
+#endif
+
+                // Create temp string to hold message
+                char tmpMsg[MAXDATASIZE];
+                for(int i = 0; i < MAXDATASIZE; i++ ) {
+                    tmpMsg[i] = 0;
+                }
+
+                // shift buff into tmpMsg
+                for (int i = 2; i< MAXDATASIZE; i++) {
+                    tmpMsg[i-2] = buff[i];
+                }
+                // Null terminate string
+                tmpMsg[strlen(tmpMsg)-1] = '\0';
+
+#ifdef DEBUG    // Show current strings and their lengths when debugging
+                printf("buff = %s\n",buff);
+                printf("temp msg = %s\n",tmpMsg);
+                printf("length of tmpMsg = %lu \n",strlen(tmpMsg));
+#endif
+                // Now determine if the file exists
+                int tmp = access(tmpMsg, F_OK);
+                if((tmp) == -1) {
+                    strcpy(msgToSend, "File not Found\0");
+                }
+                // The file exists, so now attempt to send the contents to the user
+                else {
+                    printf("This is not implemented\n");
+                }
 
             }
             // Case of display command with no entry
