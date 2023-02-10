@@ -215,11 +215,11 @@ int main(int argc, char *argv[]) {
                     }
                 }
                 char plsMsg[strlen(message)+1];
-                plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
+                //plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
 #ifdef DEBUG
                 printf("file will be name %s\n",plsMsg);
 #endif
-                plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
+                //plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
                 filePtr = fopen(plsMsg,"w");
                 do {
                     if ((numbytes = read(sockfd, buf, MAXDATASIZE - 1)) == -1) {
@@ -227,7 +227,12 @@ int main(int argc, char *argv[]) {
                         exit(1);
                     }
                     buf[numbytes] = '\0';   // This terminates the string
-
+                    if(strcmp("File not Found\0",buf)) {
+                        free(message);
+                        fclose(filePtr);
+                        close(sockfd);
+                        exit(0);
+                    }
                     fprintf(filePtr,"%s", buf);
                 } while (numbytes > 0);
                 free(message);
