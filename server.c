@@ -218,7 +218,19 @@ int main(void) {
                 }
                 // The file exists, so now attempt to send the contents to the user
                 else {
-                    printf("This is not implemented\n");
+                    char *tmpMsg2 = "cat \0";
+                    strncat(tmpMsg2, tmpMsg, strlen(tmpMsg2));
+                    FILE *fp;
+                    fp = popen(tmpMsg2, "r");
+                    while (fgets(buff, sizeof(buff), fp) != NULL) {
+                        strncat(msgToSend, buff, sizeof(msgToSend) - strlen(msgToSend) - 1);
+                        printf("%s", buff);
+                    }
+#ifdef DEBUG
+                    printf("closing FILE\n");
+#endif
+                    pclose(fp);
+
                 }
 
             }
