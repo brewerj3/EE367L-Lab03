@@ -89,10 +89,11 @@ int main(int argc, char *argv[]) {
 
         char *message;
         size_t len = 0;
+        message = (char *) malloc (MAXDATASIZE);
         // Enter While loop of asking for user input and sending it to the server
 
         // Empty message of any data
-        memset(&message, 0, sizeof(message));
+        //memset(&message, 0, sizeof(message));
 
         // Client prompts user for a command
         printf("Command(enter 'h' for help) :");
