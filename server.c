@@ -140,7 +140,7 @@ int main(void) {
             // Case of ls listing command to the server
             if (strncmp(buff, "L", 1) == 0) {      // This checks if command is 'encoded' as L
                 FILE *fp;
-                execl(".", "ls",NULL);
+                execl(".", "ls", NULL);
                 fp = popen("ls", "r");
                 while (fgets(buff, sizeof(buff), fp) != NULL) {
                     strncat(msgToSend, buff, sizeof(msgToSend) - strlen(msgToSend) - 1);
@@ -151,8 +151,8 @@ int main(void) {
 #endif
                 pclose(fp);
             }
-            // Case of check command 'encoded' as C
-            else if(strncmp(buff, "C ", 2) == 0) {
+                // Case of check command 'encoded' as C
+            else if (strncmp(buff, "C ", 2) == 0) {
 #ifdef DEBUG
                 printf("Attempt to check if %s exists \n", buff);
 #endif
@@ -163,29 +163,29 @@ int main(void) {
                 }
                 // Check rest of command
                 for (int i = 2; i < MAXDATASIZE; i++) {
-                    tmpMsg[i-2] = buff[i];
+                    tmpMsg[i - 2] = buff[i];
                 }
 
                 // Null terminate string
-                tmpMsg[strlen(tmpMsg)-1] = '\0';
+                tmpMsg[strlen(tmpMsg) - 1] = '\0';
 #ifdef DEBUG
-                printf("buff = %s\n",buff);
-                printf("temp msg = %s\n",tmpMsg);
-                printf("length of tmpMsg = %lu \n",strlen(tmpMsg));
+                printf("buff = %s\n", buff);
+                printf("temp msg = %s\n", tmpMsg);
+                printf("length of tmpMsg = %lu \n", strlen(tmpMsg));
 #endif
-                int tmp = access(tmpMsg,F_OK);
-                if((tmp) == -1) {
-                    strcpy(msgToSend,"File not found\0");
+                int tmp = access(tmpMsg, F_OK);
+                if ((tmp) == -1) {
+                    strcpy(msgToSend, "File not found\0");
                 } else {
                     strcpy(msgToSend, "File exists\0");
                 }
             }
-            // Case of check command with no entry
-            else if(strncmp(buff,"C\n",2) == 0) {
+                // Case of check command with no entry
+            else if (strncmp(buff, "C\n", 2) == 0) {
                 strcpy(msgToSend, "check command with no argument\0");
             }
-            // Case of display command 'encoded' as P
-            else if(strncmp(buff,"P ",2) == 0 || strncmp(buff, "D ",2) == 0) {
+                // Case of display command 'encoded' as P
+            else if (strncmp(buff, "P ", 2) == 0 || strncmp(buff, "D ", 2) == 0) {
 
 #ifdef DEBUG
                 // Print buff when debugging
@@ -194,30 +194,30 @@ int main(void) {
 
                 // Create temp string to hold message
                 char tmpMsg[MAXDATASIZE];
-                for(int i = 0; i < MAXDATASIZE; i++ ) {
+                for (int i = 0; i < MAXDATASIZE; i++) {
                     tmpMsg[i] = 0;
                 }
 
                 // shift buff into tmpMsg
-                for (int i = 2; i< MAXDATASIZE; i++) {
-                    tmpMsg[i-2] = buff[i];
+                for (int i = 2; i < MAXDATASIZE; i++) {
+                    tmpMsg[i - 2] = buff[i];
                 }
 
                 // Null terminate string
-                tmpMsg[strlen(tmpMsg)-1] = '\0';
+                tmpMsg[strlen(tmpMsg) - 1] = '\0';
 
 #ifdef DEBUG    // Show current strings and their lengths when debugging
-                printf("buff = %s\n",buff);
-                printf("temp msg = %s\n",tmpMsg);
-                printf("length of tmpMsg = %lu \n",strlen(tmpMsg));
+                printf("buff = %s\n", buff);
+                printf("temp msg = %s\n", tmpMsg);
+                printf("length of tmpMsg = %lu \n", strlen(tmpMsg));
 #endif
                 // Now determine if the file exists
                 int tmp = access(tmpMsg, F_OK);
-                if((tmp) == -1) {
+                if ((tmp) == -1) {
                     strcpy(msgToSend, "File not Found\0");
                 }
 
-                // The file exists, so now attempt to send the contents to the user
+                    // The file exists, so now attempt to send the contents to the user
                 else {
 #ifdef DEBUG
                     printf("now trying to read File ");
@@ -227,16 +227,16 @@ int main(void) {
 
                     strcat(tmpMsg2, tmpMsg);
 #ifdef DEBUG
-                    printf("tmpMsg2 = %s \n",tmpMsg2);
+                    printf("tmpMsg2 = %s \n", tmpMsg2);
 #endif
-                    //system(tmpMsg2);
+
                     FILE *fp;
                     fp = popen(tmpMsg2, "r");
                     while (fgets(buff, sizeof(buff), fp) != NULL) {
                         strcpy(msgToSend, buff);
 
 #ifdef DEBUG
-                        printf("msgToSend = %s\n",msgToSend);
+                        printf("msgToSend = %s\n", msgToSend);
 #endif
 
                         if (send(new_fd, msgToSend, sizeof msgToSend, 0) == -1) {
@@ -254,20 +254,19 @@ int main(void) {
                 }
 
             }
-            // Case of display command with no entry
-            else if(strncmp(buff,"P\n",2) == 0) {
+                // Case of display command with no entry
+            else if (strncmp(buff, "P\n", 2) == 0) {
                 strcpy(msgToSend, "display command with no argument\0");
-            }
-            else if(strncmp(buff, "D\n",2) == 0) {
+            } else if (strncmp(buff, "D\n", 2) == 0) {
                 strcpy(msgToSend, "download command with no argument\0");
             }
-            // If command is not recognized tell client
+                // If command is not recognized tell client
             else {
                 strcpy(msgToSend, "command not recognized by server\0");
             }
 
 #ifdef DEBUG
-            printf("sending message to client: %s\n",msgToSend);
+            printf("sending message to client: %s\n", msgToSend);
 #endif
 
             // This sends the message to the client and prints an error if it fails

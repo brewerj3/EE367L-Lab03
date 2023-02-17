@@ -29,9 +29,6 @@ void *get_in_addr(struct sockaddr *sa) {
     return &(((struct sockaddr_in6 *) sa)->sin6_addr);
 }
 
-char *shiftString(int n, char str1[], char str2[]);
-
-
 int main(int argc, char *argv[]) {
     int sockfd, numbytes, firstTime = 1;
     char buf[MAXDATASIZE];
@@ -86,13 +83,8 @@ int main(int argc, char *argv[]) {
             firstTime = 0;
         }
 
-
         char *message;
         size_t len = 0;
-        //çmessage = (char *) malloc (MAXDATASIZE);
-
-        // Empty message of any data
-        //memset(&message, 0, sizeof(message));
 
         // Client prompts user for a command
         printf("Command(enter 'h' for help) :");
@@ -157,9 +149,9 @@ int main(int argc, char *argv[]) {
             }
             message[0] = 'P';
         }
-        // Check for download command
-        else if (strncmp(message, "download\n",8) == 0) {
-            if(message[8] == '\n') {
+            // Check for download command
+        else if (strncmp(message, "download\n", 8) == 0) {
+            if (message[8] == '\n') {
                 printf("download command has no argument \n");
                 continue;
             }
@@ -183,13 +175,12 @@ int main(int argc, char *argv[]) {
         printf(" message to send %s\n", message);
 #endif
 
-
         // Send message to server
         if (message != NULL) {
             send(sockfd, message, strlen(message), 0);
         }
 
-        pid_t child_pd, parent_pid;
+        pid_t child_pd;
         int status = 0;
         // Child process listens for message from server
         if ((child_pd = fork()) == 0) {
@@ -214,24 +205,23 @@ int main(int argc, char *argv[]) {
                         message[i - 1] = message[i];
                     }
                 }
-                char plsMsg[strlen(message)+1];
+                char plsMsg[strlen(message) + 1];
                 strcpy(plsMsg, message);
                 plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
 #ifdef DEBUG
-                printf("file will be name %s\n",plsMsg);
+                printf("file will be name %s\n", plsMsg);
 #endif
-                //plsMsg[strcspn(plsMsg, "\n\r")] = '\0';
-                filePtr = fopen(plsMsg,"w");
+                filePtr = fopen(plsMsg, "w");
                 do {
                     if ((numbytes = read(sockfd, buf, MAXDATASIZE - 1)) == -1) {
                         perror("recv");
                         exit(1);
                     }
                     buf[numbytes] = '\0';   // This terminates the string
-                    if(strcmp("File not Found\0",buf) == 0) {
+                    if (strcmp("File not Found\0", buf) == 0) {
                         break;
                     }
-                    fprintf(filePtr,"%s", buf);
+                    fprintf(filePtr, "%s", buf);
                 } while (numbytes > 0);
 
                 free(message);
@@ -240,7 +230,7 @@ int main(int argc, char *argv[]) {
                 exit(0);
             }
 
-                // Receive message from server
+            // Receive message from server
             if ((numbytes = recv(sockfd, buf, MAXDATASIZE - 1, 0)) == -1) {
                 perror("recv");
                 exit(1);
@@ -251,9 +241,8 @@ int main(int argc, char *argv[]) {
             close(sockfd);
             exit(0);
         }
-
-
         memset(&message, 0, sizeof(message));
+
         // Parent waits for child process to finish
         while ((parent_pid = wait(&status)) > 0);
         close(sockfd);
