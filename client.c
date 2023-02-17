@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
             send(sockfd, message, strlen(message), 0);
         }
 
-        pid_t child_pd;
+        pid_t child_pd, parent_pid;
         int status = 0;
         // Child process listens for message from server
         if ((child_pd = fork()) == 0) {
