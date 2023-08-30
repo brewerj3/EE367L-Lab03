@@ -248,6 +248,7 @@ int main(int argc, char *argv[]) {
         close(sockfd);
     }
     freeaddrinfo(servinfo); // all done with this structure
+
     close(sockfd);
     return 0;
 }
