@@ -95,6 +95,6 @@ endif (DOXYGEN_FOUND)
 message(STATUS "PROJECT_BINARY_DIR = [${PROJECT_BINARY_DIR}]")
 
 
-add_executable(client client.c)
+add_executable(client src/client.c)
 
-add_executable(server server.c)
+add_executable(server src/server.c)
