@@ -14,13 +14,13 @@
 #include <sys/wait.h>
 #include <arpa/inet.h>
 
-#define PORT "3502" // the port client will be connecting to
+#define PORT "3502" ///< the port client will be connecting to
 
-#define DEBUG
+//#define DEBUG       ///< uncomment to output debug information
 
-#define MAXDATASIZE 100 // max number of bytes we can get at once
+#define MAXDATASIZE 100 ///< max number of bytes we can get at once
 
-// get sockaddr, IPv4 or IPv6:
+/// get sockaddr, IPv4 or IPv6:
 void *get_in_addr(struct sockaddr *sa) {
     if (sa->sa_family == AF_INET) {
         return &(((struct sockaddr_in *) sa)->sin_addr);
@@ -29,6 +29,7 @@ void *get_in_addr(struct sockaddr *sa) {
     return &(((struct sockaddr_in6 *) sa)->sin6_addr);
 }
 
+/// Client starts execution here
 int main(int argc, char *argv[]) {
     int sockfd, numbytes, firstTime = 1;
     char buf[MAXDATASIZE];
@@ -36,10 +37,12 @@ int main(int argc, char *argv[]) {
     int rv;
     char s[INET6_ADDRSTRLEN];
 
+    /// If number of arguments equals one, print error and exit program
     if (argc == 1) {
         fprintf(stderr, "usage: client hostname\n");
         exit(1);
     }
+    /// If number of arguments is larger than 2 print error message and exit program
     if (argc > 2) {
         fprintf(stderr, "usage: too many arguments\n");
         exit(1);
@@ -51,19 +54,19 @@ int main(int argc, char *argv[]) {
         hints.ai_socktype = SOCK_STREAM;
 
         if ((rv = getaddrinfo(argv[1], PORT, &hints, &servinfo)) != 0) {
-            fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+            fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));    ///< if getaddrinfo fails print error message and exit program
             return 1;
         }
 
         // loop through all the results and connect to the first we can
         for (p = servinfo; p != NULL; p = p->ai_next) {
             if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1) {
-                perror("client: socket");
+                perror("client: socket");    ///< if client socket does not exist print error message and exit program
                 continue;
             }
 
             if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-                perror("client: connect");
+                perror("client: connect");  ///< if client refuses or fails to connect print error message and close the socket file descriptor
                 close(sockfd);
                 continue;
             }
@@ -71,7 +74,7 @@ int main(int argc, char *argv[]) {
         }
 
         if (p == NULL) {
-            fprintf(stderr, "client: failed to connect\n");
+            fprintf(stderr, "client: failed to connect\n");     ///< print error if the client fails to connect
             return 2;
         }
 
@@ -101,7 +104,7 @@ int main(int argc, char *argv[]) {
         // else if decision tree for processing user input
         // Check for quit command
         if (strcmp(message, "quit\n") == 0) {
-            // Quit the client by ending the loop
+            /// Quit the client by ending the loop
             printf("Quiting client\n");
             break;
         }
